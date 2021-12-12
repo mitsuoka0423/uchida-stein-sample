@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>test document</title>
+</head>
+<body>
+  <input type="text" id="name"><br>
+  <button onclick="thanks()">感謝した</button>
+<script src="https://unpkg.com/stein-js-client"></script>
+<script>
+  const store = new SteinStore("https://api.steinhq.com/v1/storages/61b5fd69c582292380bcaf36");
+
+  store.read("sheet", { limit: 100, offset: 0 }).then(data => {
+      console.dir(data);
+      console.log(" - - - - - - - - - - - ");
+      for (let i = 0; i < data.length; i++) {
+        const element = data[i];
+        console.log("title:"+element.text);
+      }
+  });
+
+  async function thanks() {
+    await store.append("sheet", [
+      {
+        name: '光岡',
+        date: new Date().toISOString(),
+        point: 1,
+      }
+    ]);
+
+    location.href = './thanks.html';
+  }
+</script>
+</body>
+</html>
