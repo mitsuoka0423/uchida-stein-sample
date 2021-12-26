@@ -19,6 +19,13 @@
       for (let i = 0; i < data.length; i++) {
         const element = data[i];
         console.log("title:"+element.text);
+        
+        // 画面に取得したデータを表示する
+        const newDiv = document.createElement("div");
+        const newContent = document.createTextNode(data[i].name);
+        newDiv.appendChild(newContent);
+        var currentDiv = document.getElementById("div1");
+        document.body.insertBefore(newDiv, currentDiv);
       }
   });
 
