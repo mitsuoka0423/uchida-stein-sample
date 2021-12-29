@@ -7,27 +7,28 @@
     <title>test document</title>
 </head>
 <body>
-  <input type="text" id="name"><br>
+  <input type="text" id="name"><button onclick="count()">カウントする</button>
   <button onclick="thanks()">感謝した</button>
 <script src="https://unpkg.com/stein-js-client"></script>
 <script>
-  const store = new SteinStore("https://api.steinhq.com/v1/storages/61b5fd69c582292380bcaf36");
+  const store = new SteinStore("https://api.steinhq.com/v1/storages/61cc65ae8d29ba237910457b");
 
-  store.read("sheet", { limit: 100, offset: 0 }).then(data => {
+  async function count() {
+    store.read("sheet", { limit: 100, offset: 0 }).then(data => {
       console.dir(data);
-      console.log(" - - - - - - - - - - - ");
+      // カウンタ
+      let count = 0;
       for (let i = 0; i < data.length; i++) {
         const element = data[i];
-        console.log("title:"+element.text);
-        
-        // 画面に取得したデータを表示する
-        const newDiv = document.createElement("div");
-        const newContent = document.createTextNode(data[i].name);
-        newDiv.appendChild(newContent);
-        var currentDiv = document.getElementById("div1");
-        document.body.insertBefore(newDiv, currentDiv);
+        // 条件に合致する項目であればカウンタに1を加える。
+        if (document.getElementById("name").value === element.name) {
+          count++;
+        }
       }
-  });
+      // カウンタの最終結果を表示する。
+      console.log(count);
+    });
+  }
 
   async function thanks() {
     await store.append("sheet", [
